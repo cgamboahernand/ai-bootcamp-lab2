@@ -23,13 +23,28 @@ class TodoPage {
     await this.page.waitForSelector('ul', { timeout: 10000 });
   }
 
+  async clearAllTasks() {
+    const response = await this.page.request.get('/api/tasks');
+    const tasks = await response.json();
+    for (const task of tasks) {
+      await this.page.request.delete(`/api/tasks/${task.id}`);
+    }
+    // Reload to reflect cleared state
+    await this.page.reload();
+    await this.page.waitForSelector('ul', { timeout: 10000 });
+  }
+
   async addTask(name, dueDate = '') {
     await this.taskNameInput.fill(name);
     if (dueDate) {
       await this.dueDateInput.fill(dueDate);
     }
+    // Set up listener BEFORE clicking to avoid race condition
+    const responsePromise = this.page.waitForResponse(
+      (res) => res.url().includes('/api/tasks') && res.request().method() === 'POST'
+    );
     await this.addTaskButton.click();
-    await this.page.waitForResponse((res) => res.url().includes('/api/tasks') && res.request().method() === 'POST');
+    await responsePromise;
   }
 
   async getTaskNames() {
@@ -38,7 +53,7 @@ class TodoPage {
   }
 
   async clickEdit(taskName) {
-    const taskItem = this.page.locator('.task-item').filter({ hasText: taskName });
+    const taskItem = this.page.locator('.task-item').filter({ hasText: taskName }).first();
     await taskItem.getByRole('button', { name: 'Edit' }).click();
   }
 
@@ -50,8 +65,12 @@ class TodoPage {
       const editDueDateInput = this.page.getByLabel('Edit due date');
       await editDueDateInput.fill(newDueDate);
     }
+    // Set up listener BEFORE clicking to avoid race condition
+    const responsePromise = this.page.waitForResponse(
+      (res) => res.url().includes('/api/tasks') && res.request().method() === 'PUT'
+    );
     await this.page.getByRole('button', { name: 'Save' }).click();
-    await this.page.waitForResponse((res) => res.url().includes('/api/tasks') && res.request().method() === 'PUT');
+    await responsePromise;
   }
 
   async cancelEdit() {
@@ -60,26 +79,39 @@ class TodoPage {
 
   async deleteTask(taskName) {
     const taskItem = this.page.locator('.task-item').filter({ hasText: taskName });
-    await taskItem.getByRole('button', { name: 'Delete' }).click();
-    await this.page.waitForResponse((res) => res.url().includes('/api/tasks') && res.request().method() === 'DELETE');
+    // Set up listener BEFORE clicking to avoid race condition
+    const responsePromise = this.page.waitForResponse(
+      (res) => res.url().includes('/api/tasks') && res.request().method() === 'DELETE'
+    );
+    await taskItem.first().getByRole('button', { name: 'Delete' }).click();
+    await responsePromise;
   }
 
   async sortByName() {
+    // Set up listener BEFORE clicking to avoid race condition
+    const responsePromise = this.page.waitForResponse(
+      (res) => res.url().includes('sort=name')
+    );
     await this.sortByNameButton.click();
-    await this.page.waitForResponse((res) => res.url().includes('sort=name'));
+    await responsePromise;
   }
 
   async sortByDueDate() {
+    // Set up listener BEFORE clicking to avoid race condition
+    const responsePromise = this.page.waitForResponse(
+      (res) => res.url().includes('sort=due_date')
+    );
     await this.sortByDueDateButton.click();
-    await this.page.waitForResponse((res) => res.url().includes('sort=due_date'));
+    await responsePromise;
   }
 
   async expectTaskVisible(name) {
-    await expect(this.page.locator('.task-name', { hasText: name })).toBeVisible();
+    // Use .first() to avoid strict mode violation when multiple tasks have the same name
+    await expect(this.page.locator('.task-name', { hasText: name }).first()).toBeVisible();
   }
 
   async expectTaskNotVisible(name) {
-    await expect(this.page.locator('.task-name', { hasText: name })).not.toBeVisible();
+    await expect(this.page.locator('.task-name', { hasText: name })).toHaveCount(0);
   }
 }
 

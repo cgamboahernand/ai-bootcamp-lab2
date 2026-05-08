@@ -7,6 +7,7 @@ test.describe('Edit task', () => {
   test.beforeEach(async ({ page }) => {
     todoPage = new TodoPage(page);
     await todoPage.goto();
+    await todoPage.clearAllTasks();
     await todoPage.addTask('Original Task Name', '2026-06-01');
     await todoPage.expectTaskVisible('Original Task Name');
   });

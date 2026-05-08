@@ -21,6 +21,7 @@ The project follows a monorepo architecture with the following structure:
 ### Backend
 - Node.js
 - Express.js
+- SQLite (via `better-sqlite3`) — in-memory database
 
 ### Testing
 - **Unit Tests**: Test individual functions and React components in isolation using Jest
@@ -59,7 +60,8 @@ The project follows a monorepo architecture with the following structure:
 The project uses npm workspaces to manage the monorepo structure. You can:
 
 - Run `npm run start` from the root to start both frontend and backend in development mode
-- Run `npm test` from the root to run unit and integration tests for all packages
+- Run `npm test` from the root to run frontend and backend unit tests
+- Run `npm run test:integration` to run backend integration tests
 - Run `npm run test:e2e` to run Playwright end-to-end (UI) tests
 - Run `npm run test:all` to run all tests (unit, integration, and E2E)
 - Work on individual packages by navigating to their directories and using their specific scripts

@@ -25,6 +25,13 @@
 - Playwright tests must use the **Page Object Model (POM)** pattern for maintainability
 - Limit E2E tests to **5–8 critical user journeys** — focus on happy paths and key edge cases, not exhaustive coverage
 
+## General Testing Rules
+
+- **All tests must be isolated and independent** — each test should set up its own data and not rely on other tests
+- **Setup and teardown hooks are required** — tests must clean up after themselves and succeed on multiple consecutive runs
+- **All new features must include appropriate tests** — unit, integration, or E2E depending on the scope of the change
+- **Tests should be maintainable and follow best practices** — prefer readability and clarity over cleverness
+
 ## Port Configuration
 
 Always use environment variables with sensible defaults for port configuration to allow CI/CD workflows to dynamically detect ports.

@@ -7,6 +7,7 @@ test.describe('Delete task', () => {
   test.beforeEach(async ({ page }) => {
     todoPage = new TodoPage(page);
     await todoPage.goto();
+    await todoPage.clearAllTasks();
     await todoPage.addTask('Task To Delete');
     await todoPage.expectTaskVisible('Task To Delete');
   });

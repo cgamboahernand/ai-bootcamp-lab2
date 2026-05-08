@@ -7,6 +7,7 @@ test.describe('Add task with due date', () => {
   test.beforeEach(async ({ page }) => {
     todoPage = new TodoPage(page);
     await todoPage.goto();
+    await todoPage.clearAllTasks();
   });
 
   test('user can add a task and it appears in the list', async ({ page }) => {
@@ -17,6 +18,6 @@ test.describe('Add task with due date', () => {
   test('user can add a task with a due date and it shows in the list', async ({ page }) => {
     await todoPage.addTask('Task With Deadline', '2026-12-31');
     await todoPage.expectTaskVisible('Task With Deadline');
-    await expect(page.getByText(/Due: 2026-12-31/)).toBeVisible();
+    await expect(page.locator('.task-due-date', { hasText: '2026-12-31' }).first()).toBeVisible();
   });
 });

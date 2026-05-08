@@ -7,6 +7,7 @@ test.describe('Sort task list', () => {
   test.beforeEach(async ({ page }) => {
     todoPage = new TodoPage(page);
     await todoPage.goto();
+    await todoPage.clearAllTasks();
     // Seed tasks with known names for sort verification
     await todoPage.addTask('Zebra Task', '2026-07-01');
     await todoPage.addTask('Apple Task', '2026-05-01');
@@ -24,8 +25,8 @@ test.describe('Sort task list', () => {
   test('user can sort tasks by due date', async ({ page }) => {
     await todoPage.sortByDueDate();
     // Verify the sort button is active and tasks are still visible
-    await expect(page.getByText('Apple Task')).toBeVisible();
-    await expect(page.getByText('Mango Task')).toBeVisible();
-    await expect(page.getByText('Zebra Task')).toBeVisible();
+    await expect(page.locator('.task-name', { hasText: 'Apple Task' }).first()).toBeVisible();
+    await expect(page.locator('.task-name', { hasText: 'Mango Task' }).first()).toBeVisible();
+    await expect(page.locator('.task-name', { hasText: 'Zebra Task' }).first()).toBeVisible();
   });
 });
