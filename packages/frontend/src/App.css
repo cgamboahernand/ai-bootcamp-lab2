@@ -6,16 +6,23 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  padding: 20px;
+  background: linear-gradient(135deg, #ff6b6b, #feca57);
+  padding: 24px;
   color: white;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
 }
 
 .App-header h1 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+.App-header p {
+  margin: 6px 0 0;
+  opacity: 0.9;
 }
 
 main {
@@ -25,70 +32,219 @@ main {
 }
 
 section {
-  background-color: #f5f5f5;
+  background-color: #fff;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.add-item-section form {
+.add-task-section h2 {
+  color: #ff6b6b;
+  margin-top: 0;
+}
+
+.add-task-section form {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
 }
 
-input {
+input[type="text"],
+input[type="date"] {
   flex: 1;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  min-width: 120px;
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus {
+  outline: none;
+  border-color: #ff6b6b;
 }
 
 button {
-  padding: 8px 16px;
-  background-color: #61dafb;
-  color: #282c34;
+  padding: 10px 18px;
+  background-color: #ff6b6b;
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 0.9rem;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
 button:hover {
-  background-color: #21a1c9;
+  background-color: #e05555;
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Tasks section */
+.tasks-section {
+  text-align: left;
+}
+
+.tasks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.tasks-header h2 {
+  margin: 0;
+  color: #48dbfb;
+}
+
+/* Sort controls */
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-controls span {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 600;
+}
+
+.sort-btn {
+  background-color: #e0e0e0;
+  color: #444;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+}
+
+.sort-btn:hover {
+  background-color: #48dbfb;
+  color: white;
+}
+
+.sort-btn.active {
+  background-color: #48dbfb;
+  color: white;
 }
 
 ul {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
-li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
+/* Task items */
+.task-item {
+  padding: 12px 10px;
+  border-bottom: 1px solid #f0f0f0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
 }
 
-li:last-child {
+.task-item:last-child {
   border-bottom: none;
 }
 
+.task-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.task-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.task-due-date {
+  font-size: 0.8rem;
+  color: #feca57;
+  font-weight: 600;
+}
+
+.task-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Edit form inside task item */
+.task-item.editing {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.edit-form {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.edit-form input {
+  flex: 1;
+  min-width: 100px;
+}
+
+.edit-btn {
+  background-color: #feca57;
+  color: #333;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.edit-btn:hover {
+  background-color: #e6b800;
+  color: #333;
+}
+
+.save-btn {
+  background-color: #1dd1a1;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.save-btn:hover {
+  background-color: #10ac84;
+}
+
+.cancel-btn {
+  background-color: #c0c0c0;
+  color: #333;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
+.cancel-btn:hover {
+  background-color: #a0a0a0;
+  color: #333;
+}
+
 .delete-btn {
-  background-color: #f44336;
+  background-color: #ff6b6b;
   color: white;
   padding: 6px 12px;
   font-size: 0.8rem;
-  margin-left: 10px;
 }
 
 .delete-btn:hover {
-  background-color: #d32f2f;
+  background-color: #e05555;
 }
 
 .error {
-  color: #d32f2f;
+  color: #ff6b6b;
   font-weight: bold;
 }
